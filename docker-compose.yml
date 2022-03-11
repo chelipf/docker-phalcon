@@ -1,0 +1,23 @@
+version: '3.7'
+services:
+  phalcon:
+    container_name: phalcon
+    build:
+      context: https://github.com/php-not-dead/phalcon-dockerfile.git#7.4-4.1.0
+    image: phalcon
+    ports:
+    - 8080:80
+    volumes:
+    - ./src:/app
+    links:
+      - phalcon_db
+  phalcon_db:
+    image: mysql:5.7
+    volumes:
+      - "./conf/database/saleslayer.sql:/docker-entrypoint-initdb.d/1.sql"
+    env_file:
+      - conf/env/db.env
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
